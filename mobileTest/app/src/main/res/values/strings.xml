@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">mobileTest</string>
+    <string name="user_age_text">\u0020 years from \u0020</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="address">Address</string>
+    <string name="id">ID: \u0020</string>
+</resources>
