@@ -1,5 +1,6 @@
 package com.popescu.mobiletest.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
 
     private ListView listView;
     private UsersListViewAdapter adapter;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getUsers() {
-        Call<Users> call = Api.getApiClient().getUsers();
+        Call<Users> call = Api.getApiClient().getUsers(0,100,"abc");
         call.enqueue(new Callback<Users>() {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {

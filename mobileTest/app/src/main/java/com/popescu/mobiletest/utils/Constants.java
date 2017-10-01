@@ -7,5 +7,5 @@ package com.popescu.mobiletest.utils;
 public class Constants {
 
     public static final String KEY_USER_POSITION = "position";
-    public static final String URL = "https://randomuser.me/api/?page=0&results=100&seed=abc";
+    public static final String URL = "https://randomuser.me/api/";
 }

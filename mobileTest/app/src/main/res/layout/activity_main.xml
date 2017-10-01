@@ -5,10 +5,26 @@
     android:layout_height="match_parent"
     tools:context="com.popescu.mobiletest.activities.MainActivity">
 
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/large_space"
+            android:text="@string/users"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/medium_text_size" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/usersListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"></ListView>
 
