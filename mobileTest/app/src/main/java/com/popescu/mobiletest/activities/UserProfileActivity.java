@@ -22,6 +22,7 @@ import com.popescu.mobiletest.model.Users;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class UserProfileActivity extends Activity implements AdapterView.OnItemClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -31,6 +32,7 @@ public class UserProfileActivity extends Activity implements AdapterView.OnItemC
     private UserProfileInfoAdapter userProfileInfoAdapter;
     private ImageView userProfilePicture;
     private static final int REQUEST_CALL = 0;
+    private Users.User user;
 
 
     @Override
@@ -43,7 +45,7 @@ public class UserProfileActivity extends Activity implements AdapterView.OnItemC
     private void initializeView() {
         userInfoList = (ListView) findViewById(R.id.userProfileInfo);
         int pos = getIntent().getIntExtra(Constants.KEY_USER_POSITION, 0);
-        Users.User user = Users.sUsers.get(pos);
+        user = Users.sUsers.get(pos);
         userProfileInfos = new ArrayList<>();
         userProfileInfos.add(new UserProfileInfo(getResources().getString(R.string.phone), user.getPhone()));
         userProfileInfos.add(new UserProfileInfo(getResources().getString(R.string.email), user.getEmail()));
@@ -68,16 +70,66 @@ public class UserProfileActivity extends Activity implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 1: {
-          
+                call();
+                break;
             }
             case 2: {
-
+                openEmail(userProfileInfos.get(1).getValue());
+                break;
             }
             case 3: {
-
+                openMaps(userProfileInfos.get(2).getValue());
+                break;
             }
             default:
                 break;
         }
     }
+
+    private void call() {
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},
+                    REQUEST_CALL);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + userProfileInfos.get(0).getValue().replace("-|\\(|\\)", "")));
+            startActivity(intent);
+        }
+    }
+
+
+    private void openMaps(String adress) {
+        if (adress != null) {
+            String map = "http://maps.google.co.in/maps?q=" + adress;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CALL: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    call();
+                }
+                break;
+            }
+
+        }
+    }
+
+    private void openEmail(String email) {
+        if (email != null) {
+            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+            emailIntent.setType("plain/text");
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        }
+    }
+
 }
